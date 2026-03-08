@@ -24,6 +24,7 @@
       width: 100%;
       display: flex;
       align-items: center;
+      justify-content: flex-end;
       padding: 0 2.5rem;
       height: 56px;
       gap: 0.5rem;
@@ -74,7 +75,7 @@
       display: none;
       position: absolute;
       top: calc(100% + 4px);
-      left: 0;
+      right: 0;
       background: #fff;
       border: 1px solid #e5e5e5;
       border-radius: 6px;
@@ -112,8 +113,9 @@
       gap: 2rem;
     }
 
-    img.logo {
-      width: 140px;
+    img.wip-gif {
+      width: 320px;
+      max-width: 90%;
       height: auto;
     }
 
@@ -139,9 +141,8 @@
 <body>
 
   <nav>
-    <!-- Clubs -->
     <div class="nav-item">
-      <button>Clubs <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button>Clubs <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="dropdown">
         <a href="#">Club de Programación</a>
         <a href="#">Club de Robótica</a>
@@ -149,9 +150,8 @@
       </div>
     </div>
 
-    <!-- Proyectos -->
     <div class="nav-item">
-      <button>Proyectos <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button>Proyectos <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="dropdown">
         <a href="#">Proyectos Activos</a>
         <a href="#">Proyectos Finalizados</a>
@@ -159,9 +159,8 @@
       </div>
     </div>
 
-    <!-- Quiénes Somos -->
     <div class="nav-item">
-      <button>Quiénes Somos <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button>Quiénes Somos <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="dropdown">
         <a href="#">El Equipo</a>
         <a href="#">Misión y Valores</a>
@@ -169,9 +168,8 @@
       </div>
     </div>
 
-    <!-- Contacto -->
     <div class="nav-item">
-      <button>Contacto <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button>Contacto <svg viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
       <div class="dropdown">
         <a href="#">Formulario de Contacto</a>
         <a href="#">Redes Sociales</a>
@@ -181,7 +179,7 @@
   </nav>
 
   <div class="content">
-    <img class="logo" src="Itera.png" alt="Itera logo" />
+    <img class="wip-gif" src="wip.gif" alt="Work in Progress" />
     <div class="divider"></div>
     <h1>Work in Progress</h1>
     <p>We're working on something great. Check back soon.</p>
