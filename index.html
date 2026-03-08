@@ -1,419 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Work In Progress</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <title>Itera — Coming Soon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --yellow: #f5c518;
-      --orange: #e8541a;
-      --white: #f0ece3;
-      --muted: #3a3a3a;
-      --border: #222222;
+    body {
+      background: #ffffff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #222;
     }
 
-    html, body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--white);
-      font-family: 'Space Mono', monospace;
+    /* ── NAVBAR ── */
+    nav {
+      background: #b71c1c;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 2.5rem;
+      height: 56px;
+      gap: 0.5rem;
+      position: relative;
+      z-index: 100;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav-item > button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background 0.15s;
+    }
+
+    .nav-item > button:hover,
+    .nav-item:focus-within > button {
+      background: rgba(255,255,255,0.15);
+    }
+
+    .nav-item > button svg {
+      width: 10px;
+      height: 10px;
+      opacity: 0.8;
+      transition: transform 0.2s;
+    }
+
+    .nav-item:focus-within > button svg,
+    .nav-item:hover > button svg {
+      transform: rotate(180deg);
+    }
+
+    /* Dropdown */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      min-width: 180px;
       overflow: hidden;
     }
 
-    /* Grain overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 100;
-      opacity: 0.6;
+    .nav-item:hover .dropdown,
+    .nav-item:focus-within .dropdown {
+      display: block;
     }
 
-    /* Diagonal stripe background */
-    .stripes {
-      position: fixed;
-      inset: 0;
-      background-image: repeating-linear-gradient(
-        -55deg,
-        transparent,
-        transparent 40px,
-        rgba(245,197,24,0.025) 40px,
-        rgba(245,197,24,0.025) 41px
-      );
-      pointer-events: none;
-      z-index: 0;
+    .dropdown a {
+      display: block;
+      padding: 0.65rem 1.1rem;
+      font-size: 0.85rem;
+      color: #333;
+      text-decoration: none;
+      transition: background 0.12s;
     }
 
-    .container {
-      position: relative;
-      z-index: 1;
-      height: 100vh;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      padding: 2rem 3rem;
-    }
-
-    /* ── TOP BAR ── */
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1.2rem;
-      animation: fadeSlideDown 0.6s ease both;
-    }
-
-    .status-pill {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--yellow);
-      border: 1px solid var(--yellow);
-      padding: 0.3rem 0.75rem;
-      border-radius: 2px;
-    }
-
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--yellow);
-      animation: blink 1.4s step-end infinite;
-    }
-
-    .topbar-right {
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
+    .dropdown a:hover {
+      background: #fdf0f0;
+      color: #b71c1c;
     }
 
     /* ── MAIN CONTENT ── */
-    .main {
+    .content {
+      flex: 1;
       display: flex;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
-      gap: 0;
-      padding: 2rem 0;
+      gap: 2rem;
     }
 
-    .eyebrow {
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--orange);
-      margin-bottom: 1.2rem;
-      animation: fadeSlideUp 0.6s 0.15s ease both;
+    img.logo {
+      width: 140px;
+      height: auto;
     }
 
-    .headline {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(5rem, 14vw, 13rem);
-      line-height: 0.9;
-      letter-spacing: -0.01em;
-      color: var(--white);
-      animation: fadeSlideUp 0.7s 0.25s ease both;
-      position: relative;
-    }
-
-    .headline span {
-      display: block;
-      position: relative;
-    }
-
-    .headline .accent {
-      color: var(--yellow);
-      -webkit-text-stroke: 0px;
-    }
-
-    /* Glitch layers */
-    .headline .glitch {
-      position: relative;
-    }
-    .headline .glitch::before,
-    .headline .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0; left: 0;
-      font-family: inherit;
-      font-size: inherit;
-      line-height: inherit;
-      color: inherit;
-    }
-    .headline .glitch::before {
-      color: var(--orange);
-      clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
-      animation: glitchA 4s 2s infinite;
-    }
-    .headline .glitch::after {
-      color: #1af5e0;
-      clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
-      animation: glitchB 4s 2.1s infinite;
-    }
-
-    .subtext {
-      margin-top: 2.5rem;
-      max-width: 480px;
-      font-size: 0.8rem;
-      line-height: 1.9;
-      color: #888;
-      animation: fadeSlideUp 0.7s 0.4s ease both;
-    }
-
-    .subtext strong {
-      color: var(--white);
-      font-weight: 700;
-    }
-
-    /* ── PROGRESS BAR ── */
-    .progress-wrap {
-      margin-top: 3rem;
-      animation: fadeSlideUp 0.7s 0.5s ease both;
-    }
-
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.6rem;
-    }
-
-    .progress-label .pct {
-      color: var(--yellow);
-    }
-
-    .progress-bar {
-      width: 100%;
-      max-width: 480px;
-      height: 3px;
-      background: var(--border);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--orange), var(--yellow));
-      width: 0%;
-      animation: fillBar 2s 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    }
-
-    .progress-bar::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -60%;
-      width: 40%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      animation: shimmer 2.5s 3s infinite;
-    }
-
-    /* ── TICKER ── */
-    .ticker-wrap {
-      overflow: hidden;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 0.55rem 0;
-      animation: fadeSlideUp 0.7s 0.6s ease both;
-      margin-top: 2.5rem;
-    }
-
-    .ticker {
-      display: flex;
-      gap: 3rem;
-      white-space: nowrap;
-      animation: scrollTicker 18s linear infinite;
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .ticker span { flex-shrink: 0; }
-    .ticker .sep { color: var(--yellow); }
-
-    /* ── BOTTOM BAR ── */
-    .bottombar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      padding-top: 1.2rem;
-      border-top: 1px solid var(--border);
-      animation: fadeSlideUp 0.6s 0.7s ease both;
-    }
-
-    .bottom-left {
-      font-size: 0.65rem;
-      color: var(--muted);
-      line-height: 1.8;
-    }
-
-    .bottom-left a {
-      color: var(--yellow);
-      text-decoration: none;
-    }
-
-    .bottom-left a:hover { text-decoration: underline; }
-
-    .coords {
-      font-size: 0.6rem;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      text-align: right;
-    }
-
-    /* ── CORNER DECO ── */
-    .corner {
-      position: fixed;
+    .divider {
       width: 40px;
-      height: 40px;
-      opacity: 0.25;
-    }
-    .corner.tl { top: 1.5rem; left: 1.5rem; border-top: 1px solid var(--yellow); border-left: 1px solid var(--yellow); }
-    .corner.tr { top: 1.5rem; right: 1.5rem; border-top: 1px solid var(--yellow); border-right: 1px solid var(--yellow); }
-    .corner.bl { bottom: 1.5rem; left: 1.5rem; border-bottom: 1px solid var(--yellow); border-left: 1px solid var(--yellow); }
-    .corner.br { bottom: 1.5rem; right: 1.5rem; border-bottom: 1px solid var(--yellow); border-right: 1px solid var(--yellow); }
-
-    /* ── CLOCK ── */
-    #clock { font-variant-numeric: tabular-nums; }
-
-    /* ── KEYFRAMES ── */
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    @keyframes fadeSlideDown {
-      from { opacity: 0; transform: translateY(-16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fillBar {
-      to { width: 68%; }
-    }
-    @keyframes shimmer {
-      to { left: 160%; }
-    }
-    @keyframes scrollTicker {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-    @keyframes glitchA {
-      0%, 90%, 100% { transform: translate(0); opacity: 0; }
-      92%            { transform: translate(-4px, 1px); opacity: 0.7; }
-      94%            { transform: translate(3px, -1px); opacity: 0.7; }
-      96%            { transform: translate(0); opacity: 0; }
-    }
-    @keyframes glitchB {
-      0%, 90%, 100% { transform: translate(0); opacity: 0; }
-      91%            { transform: translate(4px, -2px); opacity: 0.5; }
-      93%            { transform: translate(-3px, 2px); opacity: 0.5; }
-      95%            { transform: translate(0); opacity: 0; }
+      height: 2px;
+      background: #b71c1c;
+      border-radius: 2px;
     }
 
-    @media (max-width: 600px) {
-      .container { padding: 1.2rem 1.5rem; }
-      .topbar-right, .coords { display: none; }
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 500;
+    }
+
+    p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: #666;
     }
   </style>
 </head>
 <body>
 
-  <div class="stripes"></div>
-  <div class="corner tl"></div>
-  <div class="corner tr"></div>
-  <div class="corner bl"></div>
-  <div class="corner br"></div>
-
-  <div class="container">
-
-    <!-- TOP -->
-    <header class="topbar">
-      <div class="status-pill">
-        <div class="status-dot"></div>
-        Under Construction
+  <nav>
+    <!-- Clubs -->
+    <div class="nav-item">
+      <button>Clubs <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dropdown">
+        <a href="#">Club de Programación</a>
+        <a href="#">Club de Robótica</a>
+        <a href="#">Club de IA</a>
       </div>
-      <div class="topbar-right" id="clock">--:--:--</div>
-    </header>
+    </div>
 
-    <!-- MAIN -->
-    <main class="main">
-      <p class="eyebrow">// Something is brewing</p>
-
-      <h1 class="headline">
-        <span class="glitch" data-text="WORK">WORK</span>
-        <span>IN</span>
-        <span class="accent">PROGRESS</span>
-      </h1>
-
-      <p class="subtext">
-        We're heads-down building something worth your time.<br/>
-        <strong>Check back soon</strong> — good things take a moment.
-      </p>
-
-      <div class="progress-wrap">
-        <div class="progress-label">
-          <span>Build progress</span>
-          <span class="pct">68%</span>
-        </div>
-        <div class="progress-bar">
-          <div class="progress-fill"></div>
-        </div>
+    <!-- Proyectos -->
+    <div class="nav-item">
+      <button>Proyectos <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dropdown">
+        <a href="#">Proyectos Activos</a>
+        <a href="#">Proyectos Finalizados</a>
+        <a href="#">Proponer Proyecto</a>
       </div>
+    </div>
 
-      <div class="ticker-wrap">
-        <div class="ticker" id="ticker">
-          <span>Designing</span><span class="sep">✦</span>
-          <span>Building</span><span class="sep">✦</span>
-          <span>Testing</span><span class="sep">✦</span>
-          <span>Iterating</span><span class="sep">✦</span>
-          <span>Almost there</span><span class="sep">✦</span>
-          <span>Designing</span><span class="sep">✦</span>
-          <span>Building</span><span class="sep">✦</span>
-          <span>Testing</span><span class="sep">✦</span>
-          <span>Iterating</span><span class="sep">✦</span>
-          <span>Almost there</span><span class="sep">✦</span>
-        </div>
+    <!-- Quiénes Somos -->
+    <div class="nav-item">
+      <button>Quiénes Somos <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dropdown">
+        <a href="#">El Equipo</a>
+        <a href="#">Misión y Valores</a>
+        <a href="#">Historia</a>
       </div>
-    </main>
+    </div>
 
-    <!-- BOTTOM -->
-    <footer class="bottombar">
-      <div class="bottom-left">
-        Questions? Reach out at <a href="mailto:hello@example.com">hello@example.com</a>
+    <!-- Contacto -->
+    <div class="nav-item">
+      <button>Contacto <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1l4 4 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="dropdown">
+        <a href="#">Formulario de Contacto</a>
+        <a href="#">Redes Sociales</a>
+        <a href="#">Email</a>
       </div>
-      <div class="coords">
-        SYS_STATUS: ACTIVE<br/>
-        REV: 0.0.1-alpha
-      </div>
-    </footer>
+    </div>
+  </nav>
 
+  <div class="content">
+    <img class="logo" src="Itera.png" alt="Itera logo" />
+    <div class="divider"></div>
+    <h1>Work in Progress</h1>
+    <p>We're working on something great. Check back soon.</p>
   </div>
 
-  <script>
-    // Live clock
-    function tick() {
-      const el = document.getElementById('clock');
-      const now = new Date();
-      el.textContent = now.toLocaleTimeString('en-GB', { hour12: false });
-    }
-    tick();
-    setInterval(tick, 1000);
-  </script>
 </body>
 </html>
